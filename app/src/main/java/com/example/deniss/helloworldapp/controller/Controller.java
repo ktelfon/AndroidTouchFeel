@@ -16,6 +16,7 @@ import java.util.Random;
 public class Controller {
 
     private int pairIdx = 0;
+    private boolean actionInProgress;
     private ButtonPair currentPair;
     private HashMap<Integer, CustomButton> buttons;
     private HashMap<Integer, ButtonPair> buttonPairs;
@@ -67,35 +68,43 @@ public class Controller {
         }
 
         if (currentPair.getFirst() != null && currentPair.getSecond() != null) {
-            if (currentPair.getFirst().getPairId() == currentPair.getSecond().getPairId()) {
-                // pair is open
-                buttonPairs.remove(currentPair.getId());
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
 
-                buttons.remove(currentPair.getFirst().getId());
-                buttons.remove(currentPair.getSecond().getId());
+                    if (currentPair.getFirst().getPairId() == currentPair.getSecond().getPairId()) {
+                        // pair is open
+                        buttonPairs.remove(currentPair.getId());
 
-                ViewGroup layout = (ViewGroup) currentPair.getFirst().getParent();
-                if (null != layout) { //for safety only  as you are doing onClick
-                    layout.removeView(currentPair.getFirst());
-                    layout.removeView(currentPair.getSecond());
+                        buttons.remove(currentPair.getFirst().getId());
+                        buttons.remove(currentPair.getSecond().getId());
+
+                        ViewGroup layout = (ViewGroup) currentPair.getFirst().getParent();
+                        if (null != layout) { //for safety only  as you are doing onClick
+                            layout.removeView(currentPair.getFirst());
+                            layout.removeView(currentPair.getSecond());
+                        }
+
+                        currentPair.setFirst(null);
+                        currentPair.setSecond(null);
+
+                    } else {
+
+                        currentPair.getFirst().setIsClicked(false);
+                        currentPair.getSecond().setIsClicked(false);
+
+                        //TODO: add animation to this
+                        currentPair.getFirst().setBackgroundColor(Color.RED);
+                        currentPair.getSecond().setBackgroundColor(Color.RED);
+
+                        currentPair.setFirst(null);
+                        currentPair.setSecond(null);
+                    }
                 }
 
-                currentPair.setFirst(null);
-                currentPair.setSecond(null);
-
-        } else {
-
-            currentPair.getFirst().setIsClicked(false);
-            currentPair.getSecond().setIsClicked(false);
-
-            //TODO: add animation to this
-            currentPair.getFirst().setBackgroundColor(Color.RED);
-            currentPair.getSecond().setBackgroundColor(Color.RED);
-
-            currentPair.setFirst(null);
-            currentPair.setSecond(null);
+            }, 1000);
         }
-    }
+
 }
 
 
