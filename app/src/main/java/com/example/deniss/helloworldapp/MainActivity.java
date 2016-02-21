@@ -12,9 +12,21 @@ import android.view.MenuItem;
 import com.example.deniss.helloworldapp.controller.Controller;
 import com.example.deniss.helloworldapp.models.CustomButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private Controller controller;
+
+    private Integer[] buttonIdx = {
+            R.id.button1, R.id.button2, R.id.button3,
+            R.id.button4, R.id.button5, R.id.button6,
+            R.id.button7, R.id.button8, R.id.button9,
+            R.id.button10, R.id.button11, R.id.button12};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +52,16 @@ public class MainActivity extends AppCompatActivity {
         //TODO: Add reset button
         controller = new Controller();
 
-        //TODO: make this better without XML so it can go to a list
-        CustomButton button1 = createButton(R.id.button1);
-        CustomButton button2 = createButton(R.id.button2);
-        CustomButton button3 = createButton(R.id.button3);
-        CustomButton button4 = createButton(R.id.button4);
-        CustomButton button5 = createButton(R.id.button5);
-        CustomButton button6 = createButton(R.id.button6);
-        CustomButton button7 = createButton(R.id.button7);
-        CustomButton button8 = createButton(R.id.button8);
-        CustomButton button9 = createButton(R.id.button9);
-        CustomButton button10 = createButton(R.id.button10);
-        CustomButton button11 = createButton(R.id.button11);
-        CustomButton button12 = createButton(R.id.button12);
+        long seed = System.nanoTime();
+        List<Integer> listOfButtonIndexes = Arrays.asList(buttonIdx);
+        Collections.shuffle(listOfButtonIndexes, new Random(seed));
 
-        //TODO: Randomize pairs
-        controller.createPair(button1, button2);
-        controller.createPair(button3, button4);
-        controller.createPair(button5, button6);
-        controller.createPair(button7, button8);
-        controller.createPair(button9, button10);
-        controller.createPair(button11, button12);
+        for(int i = 0 ; i < listOfButtonIndexes.size(); i += 2){
+            //TODO: make this better without XML so it can go to a list
+            controller.createPair(
+                    createButton(listOfButtonIndexes.get(i + 1)),
+                    createButton(listOfButtonIndexes.get(i)));
+        }
     }
 
     private CustomButton createButton(int buttonId)
