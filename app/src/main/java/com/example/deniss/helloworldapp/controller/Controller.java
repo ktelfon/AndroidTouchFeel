@@ -16,7 +16,6 @@ import java.util.Random;
 public class Controller {
 
     private int pairIdx = 0;
-    private boolean actionInProgress;
     private ButtonPair currentPair;
     private HashMap<Integer, CustomButton> buttons;
     private HashMap<Integer, ButtonPair> buttonPairs;
@@ -58,51 +57,52 @@ public class Controller {
     public void checkIfPairIsOpen(CustomButton btn) {
 
         //TODO: add animation to this
-        btn.setBackgroundColor(btn.getDefaultColor());
-        btn.setIsClicked(true);
+        if(!(currentPair.getFirst() != null && currentPair.getSecond() != null)) {
+            btn.setBackgroundColor(btn.getDefaultColor());
+            btn.setIsClicked(true);
 
-        if (currentPair.getFirst() == null) {
-            currentPair.setFirst(btn);
-        } else if (currentPair.getSecond() == null) {
-            currentPair.setSecond(btn);
-        }
+            if (currentPair.getFirst() == null) {
+                currentPair.setFirst(btn);
+            } else if (currentPair.getSecond() == null) {
+                currentPair.setSecond(btn);
+            }
 
-        if (currentPair.getFirst() != null && currentPair.getSecond() != null) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
+            if (currentPair.getFirst() != null && currentPair.getSecond() != null) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                            if (currentPair.getFirst().getPairId() == currentPair.getSecond().getPairId()) {
+                                // pair is open
+                                buttonPairs.remove(currentPair.getId());
 
-                    if (currentPair.getFirst().getPairId() == currentPair.getSecond().getPairId()) {
-                        // pair is open
-                        buttonPairs.remove(currentPair.getId());
+                                buttons.remove(currentPair.getFirst().getId());
+                                buttons.remove(currentPair.getSecond().getId());
 
-                        buttons.remove(currentPair.getFirst().getId());
-                        buttons.remove(currentPair.getSecond().getId());
+                                ViewGroup layout = (ViewGroup) currentPair.getFirst().getParent();
+                                if (null != layout) { //for safety only  as you are doing onClick
+                                    layout.removeView(currentPair.getFirst());
+                                    layout.removeView(currentPair.getSecond());
+                                }
 
-                        ViewGroup layout = (ViewGroup) currentPair.getFirst().getParent();
-                        if (null != layout) { //for safety only  as you are doing onClick
-                            layout.removeView(currentPair.getFirst());
-                            layout.removeView(currentPair.getSecond());
-                        }
+                                currentPair.setFirst(null);
+                                currentPair.setSecond(null);
 
-                        currentPair.setFirst(null);
-                        currentPair.setSecond(null);
+                            } else {
 
-                    } else {
+                                currentPair.getFirst().setIsClicked(false);
+                                currentPair.getSecond().setIsClicked(false);
 
-                        currentPair.getFirst().setIsClicked(false);
-                        currentPair.getSecond().setIsClicked(false);
+                                //TODO: add animation to this
+                                currentPair.getFirst().setBackgroundColor(Color.RED);
+                                currentPair.getSecond().setBackgroundColor(Color.RED);
 
-                        //TODO: add animation to this
-                        currentPair.getFirst().setBackgroundColor(Color.RED);
-                        currentPair.getSecond().setBackgroundColor(Color.RED);
-
-                        currentPair.setFirst(null);
-                        currentPair.setSecond(null);
+                                currentPair.setFirst(null);
+                                currentPair.setSecond(null);
+                            }
                     }
-                }
 
-            }, 1000);
+                }, 1000);
+            }
         }
 
 }

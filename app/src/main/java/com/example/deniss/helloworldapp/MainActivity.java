@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         final CustomButton btn = (CustomButton) findViewById(buttonId);
 
         btn.setText("Click To change!");
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
