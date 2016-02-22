@@ -2,6 +2,7 @@ package com.example.deniss.helloworldapp.controller;
 
 import android.graphics.Color;
 import android.os.Handler;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.deniss.helloworldapp.models.ButtonPair;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by Deniss on 19-Feb-16.
+ * Created by ktelfon on 19-Feb-16.
  */
 public class Controller {
 
@@ -39,8 +40,8 @@ public class Controller {
         first.setDefaultColor(color);
         second.setDefaultColor(color);
 
-        first.setBackgroundColor(Color.RED);
-        second.setBackgroundColor(Color.RED);
+        first.setBackgroundColor(Color.GREEN);
+        second.setBackgroundColor(Color.GREEN);
 
         buttons.put(first.getId(), first);
         buttons.put(second.getId(), second);
@@ -55,9 +56,9 @@ public class Controller {
     }
 
     public void checkIfPairIsOpen(CustomButton btn) {
-
-        //TODO: add animation to this
+        //TODO: fix the selection of same button
         if(!(currentPair.getFirst() != null && currentPair.getSecond() != null)) {
+            //TODO: add animation to this
             btn.setBackgroundColor(btn.getDefaultColor());
             btn.setIsClicked(true);
 
@@ -78,11 +79,8 @@ public class Controller {
                                 buttons.remove(currentPair.getFirst().getId());
                                 buttons.remove(currentPair.getSecond().getId());
 
-                                ViewGroup layout = (ViewGroup) currentPair.getFirst().getParent();
-                                if (null != layout) { //for safety only  as you are doing onClick
-                                    layout.removeView(currentPair.getFirst());
-                                    layout.removeView(currentPair.getSecond());
-                                }
+                                currentPair.getFirst().setVisibility(View.INVISIBLE);
+                                currentPair.getSecond().setVisibility(View.INVISIBLE);
 
                                 currentPair.setFirst(null);
                                 currentPair.setSecond(null);
@@ -93,19 +91,26 @@ public class Controller {
                                 currentPair.getSecond().setIsClicked(false);
 
                                 //TODO: add animation to this
-                                currentPair.getFirst().setBackgroundColor(Color.RED);
-                                currentPair.getSecond().setBackgroundColor(Color.RED);
+                                currentPair.getFirst().setBackgroundColor(Color.GREEN);
+                                currentPair.getSecond().setBackgroundColor(Color.GREEN);
 
                                 currentPair.setFirst(null);
                                 currentPair.setSecond(null);
                             }
                     }
 
-                }, 1000);
+                }, AppConst.BUTTON_DELAY);
             }
         }
 
 }
+    public HashMap<Integer, CustomButton> getButtons() {
+        return buttons;
+    }
+
+    public boolean showRestartButton(){
+        return getButtons().size() == 0;
+    }
 
 
 }

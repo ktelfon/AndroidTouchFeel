@@ -1,6 +1,7 @@
 package com.example.deniss.helloworldapp;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
+import com.example.deniss.helloworldapp.controller.AppConst;
 import com.example.deniss.helloworldapp.controller.Controller;
 import com.example.deniss.helloworldapp.models.CustomButton;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,9 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private Controller controller;
+    private int resetButtonIndex = R.id.resetButton;
+
+    Button resetButton = null;
 
     private Integer[] buttonIdx = {
             R.id.button1, R.id.button2, R.id.button3,
@@ -34,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        resetButton = (Button) findViewById(resetButtonIndex);
+        resetButton.setVisibility(View.INVISIBLE);
+        resetButton.setText(AppConst.RESET_BUTTON_TEXT);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetButton.setVisibility(View.INVISIBLE);
+                setupApp();
+            }
+        });
 
         setupApp();
 
@@ -49,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupApp(){
 
-        //TODO: Add reset button
         controller = new Controller();
 
         long seed = System.nanoTime();
@@ -57,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(listOfButtonIndexes, new Random(seed));
 
         for(int i = 0 ; i < listOfButtonIndexes.size(); i += 2){
-            //TODO: make this better without XML so it can go to a list
+            //TODO: make this without XML
             controller.createPair(
                     createButton(listOfButtonIndexes.get(i + 1)),
                     createButton(listOfButtonIndexes.get(i)));
@@ -69,13 +84,21 @@ public class MainActivity extends AppCompatActivity {
         final CustomButton btn = (CustomButton) findViewById(buttonId);
 
         btn.setText("Click To change!");
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 controller.checkIfPairIsOpen(btn);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        if(controller.showRestartButton()){
+                            resetButton.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }, AppConst.BUTTON_DELAY);
             }
         });
+        btn.setVisibility(View.VISIBLE);
         return btn;
     }
 
