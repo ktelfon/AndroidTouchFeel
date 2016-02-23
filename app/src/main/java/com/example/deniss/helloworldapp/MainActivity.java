@@ -2,14 +2,13 @@ package com.example.deniss.helloworldapp;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.deniss.helloworldapp.controller.AppConst;
 import com.example.deniss.helloworldapp.controller.Controller;
@@ -24,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Controller controller;
     private int resetButtonIndex = R.id.resetButton;
+    private int guessCounterIndex = R.id.guessCounterLabel;
 
-    Button resetButton = null;
+    private Button resetButton;
+    private TextView guessCounterLabel;
 
     private Integer[] buttonIdx = {
             R.id.button1, R.id.button2, R.id.button3,
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        guessCounterLabel = (TextView) findViewById(guessCounterIndex);
+        guessCounterLabel.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        guessCounterLabel.setTextSize(30);
+        guessCounterLabel.setText(AppConst.GUESS_COUNTER_LABEL_TEXT + 0);
+
         resetButton = (Button) findViewById(resetButtonIndex);
         resetButton.setVisibility(View.INVISIBLE);
         resetButton.setText(AppConst.RESET_BUTTON_TEXT);
@@ -47,20 +53,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetButton.setVisibility(View.INVISIBLE);
+                guessCounterLabel.setVisibility(View.VISIBLE);
                 setupApp();
             }
         });
 
         setupApp();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     private void setupApp(){
@@ -83,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
     {
         final CustomButton btn = (CustomButton) findViewById(buttonId);
 
-        btn.setText("Click To change!");
+        btn.setTextSize(50);
+        btn.setText("?");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,14 +90,18 @@ public class MainActivity extends AppCompatActivity {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        if(controller.showRestartButton()){
+                        if (controller.showRestartButton()) {
+                            controller.resetCounter();
                             resetButton.setVisibility(View.VISIBLE);
+                            guessCounterLabel.setVisibility(View.INVISIBLE);
                         }
+                        guessCounterLabel.setText(AppConst.GUESS_COUNTER_LABEL_TEXT + controller.getGuessCounter());
                     }
                 }, AppConst.BUTTON_DELAY);
             }
         });
         btn.setVisibility(View.VISIBLE);
+
         return btn;
     }
 

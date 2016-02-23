@@ -1,6 +1,7 @@
 package com.example.deniss.helloworldapp.controller;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.Random;
 public class Controller {
 
     private int pairIdx = 0;
+    private int guessCounter = 0;
     private ButtonPair currentPair;
     private HashMap<Integer, CustomButton> buttons;
     private HashMap<Integer, ButtonPair> buttonPairs;
@@ -37,11 +39,11 @@ public class Controller {
             color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         }
 
+        first.setBackground(getStyle(Color.GREEN));
+        second.setBackground(getStyle(Color.GREEN));
+
         first.setDefaultColor(color);
         second.setDefaultColor(color);
-
-        first.setBackgroundColor(Color.GREEN);
-        second.setBackgroundColor(Color.GREEN);
 
         buttons.put(first.getId(), first);
         buttons.put(second.getId(), second);
@@ -56,15 +58,14 @@ public class Controller {
     }
 
     public void checkIfPairIsOpen(CustomButton btn) {
-        //TODO: fix the selection of same button
         if(!(currentPair.getFirst() != null && currentPair.getSecond() != null)) {
             //TODO: add animation to this
-            btn.setBackgroundColor(btn.getDefaultColor());
+            btn.setBackground(getStyle(btn.getDefaultColor()));
             btn.setIsClicked(true);
 
             if (currentPair.getFirst() == null) {
                 currentPair.setFirst(btn);
-            } else if (currentPair.getSecond() == null) {
+            } else if (currentPair.getSecond() == null && btn.getId() != currentPair.getFirst().getId()) {
                 currentPair.setSecond(btn);
             }
 
@@ -86,13 +87,14 @@ public class Controller {
                                 currentPair.setSecond(null);
 
                             } else {
+                                guessCounter++;
 
                                 currentPair.getFirst().setIsClicked(false);
                                 currentPair.getSecond().setIsClicked(false);
 
                                 //TODO: add animation to this
-                                currentPair.getFirst().setBackgroundColor(Color.GREEN);
-                                currentPair.getSecond().setBackgroundColor(Color.GREEN);
+                                currentPair.getFirst().setBackground(getStyle(Color.GREEN));
+                                currentPair.getSecond().setBackground(getStyle(Color.GREEN));
 
                                 currentPair.setFirst(null);
                                 currentPair.setSecond(null);
@@ -112,5 +114,18 @@ public class Controller {
         return getButtons().size() == 0;
     }
 
+    private GradientDrawable getStyle(int color){
+        GradientDrawable shape = new GradientDrawable();
+//        shape.setCornerRadius(100);
+        shape.setColor(color);
+        return shape;
+    }
 
+    public int getGuessCounter() {
+        return guessCounter;
+    }
+
+    public void resetCounter() {
+        guessCounter = 0;
+    }
 }

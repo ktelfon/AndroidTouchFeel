@@ -6,4 +6,5 @@ package com.example.deniss.helloworldapp.controller;
 public class AppConst {
     public final static int BUTTON_DELAY = 500;
     public final static String RESET_BUTTON_TEXT = "Restart";
+    public final static String GUESS_COUNTER_LABEL_TEXT = "You have tried : ";
 }
