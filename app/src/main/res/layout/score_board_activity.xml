@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.deniss.helloworldapp.ScoreBoardActivity">
+
+    <EditText
+        android:id="@+id/user_name_input"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:hint="@string/user_name_hint"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/score1"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="45dp"
+        />
+
+    <TextView
+        android:id="@+id/score2"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="85dp"
+        />
+    <TextView
+        android:id="@+id/score3"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="125dp"
+        />
+    <TextView
+        android:id="@+id/score4"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="165dp"
+        />
+    <TextView
+        android:id="@+id/score5"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="205dp"
+        />
+    <TextView
+        android:id="@+id/score6"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="245dp"
+        />
+    <TextView
+        android:id="@+id/score7"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="285dp"
+        />
+    <TextView
+        android:id="@+id/score8"
+        android:layout_width="360dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="325dp"
+        />
+
+    <Button
+        android:id="@+id/return_to_main_button"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="380dp"
+        android:focusable="true"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+</android.support.design.widget.CoordinatorLayout>

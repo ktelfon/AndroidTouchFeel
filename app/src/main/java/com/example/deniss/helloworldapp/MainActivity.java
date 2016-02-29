@@ -1,5 +1,6 @@
 package com.example.deniss.helloworldapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -86,14 +87,16 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switchToScoreBoard();
                 controller.checkIfPairIsOpen(btn);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         if (controller.showRestartButton()) {
-                            controller.resetCounter();
+                            switchToScoreBoard();
                             resetButton.setVisibility(View.VISIBLE);
                             guessCounterLabel.setVisibility(View.INVISIBLE);
+                            controller.resetCounter();
                         }
                         guessCounterLabel.setText(AppConst.GUESS_COUNTER_LABEL_TEXT + controller.getGuessCounter());
                     }
@@ -103,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
         btn.setVisibility(View.VISIBLE);
 
         return btn;
+    }
+
+    private void switchToScoreBoard(){
+        Intent i = new Intent(getApplicationContext(), ScoreBoardActivity.class);
+        i.putExtra("score", String.valueOf(controller.getGuessCounter()));
+        startActivity(i);
     }
 
     @Override
