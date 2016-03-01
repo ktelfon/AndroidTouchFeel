@@ -8,6 +8,7 @@
     tools:context="com.example.deniss.helloworldapp.ScoreBoardActivity">
 
     <EditText
+        android:imeOptions="actionGo"
         android:id="@+id/user_name_input"
         android:layout_width="300dp"
         android:layout_height="40dp"

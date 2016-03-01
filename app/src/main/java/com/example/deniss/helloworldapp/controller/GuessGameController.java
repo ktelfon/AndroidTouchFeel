@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Created by ktelfon on 19-Feb-16.
  */
-public class Controller {
+public class GuessGameController {
 
     private int pairIdx = 0;
     private int guessCounter = 0;
@@ -23,7 +23,7 @@ public class Controller {
     private HashMap<Integer, CustomButton> buttons;
     private HashMap<Integer, ButtonPair> buttonPairs;
 
-    public Controller() {
+    public GuessGameController() {
         buttonPairs = new HashMap<>();
         buttons = new HashMap<>();
         currentPair = new ButtonPair();

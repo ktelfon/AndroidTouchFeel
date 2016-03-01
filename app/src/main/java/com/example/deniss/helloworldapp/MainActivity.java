@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.deniss.helloworldapp.controller.AppConst;
-import com.example.deniss.helloworldapp.controller.Controller;
+import com.example.deniss.helloworldapp.controller.GuessGameController;
 import com.example.deniss.helloworldapp.models.CustomButton;
 
 import java.util.Arrays;
@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Controller controller;
+    private GuessGameController guessGameController;
     private int resetButtonIndex = R.id.resetButton;
     private int guessCounterIndex = R.id.guessCounterLabel;
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupApp(){
 
-        controller = new Controller();
+        guessGameController = new GuessGameController();
 
         long seed = System.nanoTime();
         List<Integer> listOfButtonIndexes = Arrays.asList(buttonIdx);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0 ; i < listOfButtonIndexes.size(); i += 2){
             //TODO: make this without XML
-            controller.createPair(
+            guessGameController.createPair(
                     createButton(listOfButtonIndexes.get(i + 1)),
                     createButton(listOfButtonIndexes.get(i)));
         }
@@ -88,17 +88,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switchToScoreBoard();
-                controller.checkIfPairIsOpen(btn);
+                guessGameController.checkIfPairIsOpen(btn);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        if (controller.showRestartButton()) {
+                        if (guessGameController.showRestartButton()) {
                             switchToScoreBoard();
                             resetButton.setVisibility(View.VISIBLE);
                             guessCounterLabel.setVisibility(View.INVISIBLE);
-                            controller.resetCounter();
+                            guessGameController.resetCounter();
                         }
-                        guessCounterLabel.setText(AppConst.GUESS_COUNTER_LABEL_TEXT + controller.getGuessCounter());
+                        guessCounterLabel.setText(AppConst.GUESS_COUNTER_LABEL_TEXT + guessGameController.getGuessCounter());
                     }
                 }, AppConst.BUTTON_DELAY);
             }
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchToScoreBoard(){
         Intent i = new Intent(getApplicationContext(), ScoreBoardActivity.class);
-        i.putExtra("score", String.valueOf(controller.getGuessCounter()));
+        i.putExtra("score", String.valueOf(guessGameController.getGuessCounter()));
         startActivity(i);
     }
 

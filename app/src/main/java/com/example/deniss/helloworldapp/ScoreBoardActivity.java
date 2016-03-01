@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.deniss.helloworldapp.controller.ScoreBoardController;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,7 +23,14 @@ import java.util.List;
  */
 public class ScoreBoardActivity extends AppCompatActivity {
 
-    List<TextView> scoreBoardLabes;
+    ScoreBoardController scoreBoardController;
+
+    final Integer[] enterKeys = {
+            EditorInfo.IME_ACTION_GO,
+            KeyEvent.KEYCODE_DPAD_CENTER,
+            KeyEvent.KEYCODE_ENTER
+    };
+
     private Integer[] labelIdx = {
             R.id.score1, R.id.score2, R.id.score3,
             R.id.score4, R.id.score5, R.id.score6,
@@ -40,17 +50,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private void setUpLayoutObjects() throws PackageManager.NameNotFoundException {
 
         setContentView(R.layout.score_board_activity);
-
-        ActivityInfo activityInfo = getPackageManager().getActivityInfo(
-                getComponentName(), PackageManager.GET_META_DATA);
-        String title = activityInfo.loadLabel(getPackageManager())
-                .toString();
-
-        Intent intent = getIntent();
-        // Receiving the Data
-        String score = intent.getStringExtra("score");
-
-        setTitle(title + ": " + score);
+        setActivityLabel();
 
         Button backButton = (Button) findViewById(R.id.return_to_main_button);
         backButton.setText(" Back !");
@@ -63,11 +63,37 @@ public class ScoreBoardActivity extends AppCompatActivity {
 
         final EditText userNameInput = (EditText) findViewById(R.id.user_name_input);
         userNameInput.setImeActionLabel("Done!", KeyEvent.KEYCODE_ENTER);
-        
-        scoreBoardLabes = new ArrayList<>();
+
+        userNameInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(final TextView textView, final int keyCode, final KeyEvent keyEvent) {
+                if (Arrays.asList(enterKeys).contains(keyCode)) {
+                    return true;
+                }
+                return false;
+            }
+
+        });
+
+        scoreBoardController = new ScoreBoardController();
         for (int i = 0; i < labelIdx.length; i++){
-            scoreBoardLabes.add((TextView) findViewById(labelIdx[i]));
+            TextView scoreBoardLabel = (TextView) findViewById(labelIdx[i]);
+            scoreBoardController.setScoreBoardLabel(scoreBoardLabel, 0);
         }
+    }
+
+    private void setActivityLabel() throws PackageManager.NameNotFoundException {
+        ActivityInfo activityInfo = getPackageManager().getActivityInfo(
+                getComponentName(), PackageManager.GET_META_DATA);
+        String title = activityInfo.loadLabel(getPackageManager())
+                .toString();
+
+        Intent intent = getIntent();
+        // Receiving the Data
+        final String score = intent.getStringExtra("score");
+
+        setTitle(title + ": " + score);
     }
 
 }
