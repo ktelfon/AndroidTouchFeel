@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.example.deniss.helloworldapp.ScoreBoardActivity">
 
     <EditText
-        android:imeOptions="actionGo"
+        android:imeOptions="actionDone"
         android:id="@+id/user_name_input"
         android:layout_width="300dp"
         android:layout_height="40dp"

@@ -12,13 +12,28 @@ import java.util.List;
  */
 public class ScoreBoardController {
 
-    List<ScorePair> scoreBoardLabes;
+    private int maxLabelCounter = 0;
+    private int freeLabelCounter = 0;
+    private List<ScorePair> scoreBoardLabels;
 
     public ScoreBoardController() {
-        scoreBoardLabes = new ArrayList<>();
+        scoreBoardLabels = new ArrayList<>();
     }
 
     public void setScoreBoardLabel(TextView scoreBoardLabel, int score){
-        scoreBoardLabes.add(new ScorePair(scoreBoardLabel, score));
+        scoreBoardLabels.add(new ScorePair(scoreBoardLabel, score));
+    }
+
+    public void setMaxLabelCounter(int maxLabelCounter) {
+        this.maxLabelCounter = maxLabelCounter;
+    }
+
+    public void setLabel(String text, int score) {
+        scoreBoardLabels.get(freeLabelCounter).getLabel().setText(text);
+        scoreBoardLabels.get(freeLabelCounter).setScore(score);
+        freeLabelCounter++;
+        if(freeLabelCounter == maxLabelCounter){
+            freeLabelCounter = 0;
+        }
     }
 }

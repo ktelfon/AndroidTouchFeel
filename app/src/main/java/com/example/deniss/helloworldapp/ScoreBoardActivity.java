@@ -7,16 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.deniss.helloworldapp.controller.ScoreBoardController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Deniss on 27-Feb-16.
@@ -50,6 +50,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private void setUpLayoutObjects() throws PackageManager.NameNotFoundException {
 
         setContentView(R.layout.score_board_activity);
+        scoreBoardController = new ScoreBoardController();
         setActivityLabel();
 
         Button backButton = (Button) findViewById(R.id.return_to_main_button);
@@ -69,18 +70,33 @@ public class ScoreBoardActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(final TextView textView, final int keyCode, final KeyEvent keyEvent) {
                 if (Arrays.asList(enterKeys).contains(keyCode)) {
+                    //TODO: Block this edit text when this happens
+                    //TODO: Fix score diplay
+                    //TODO: Save entered values
+                    //TODO: Lode saved values
+                    scoreBoardController.setLabel(
+                            userNameInput.getText().toString(),
+                            Integer.valueOf(getIntent().getStringExtra("score")));
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(userNameInput.getWindowToken(), 0);
+                    userNameInput.clearFocus();
+                    userNameInput.setText("");
                     return true;
                 }
                 return false;
             }
-
         });
 
-        scoreBoardController = new ScoreBoardController();
+        userNameInput.setImeOptions(userNameInput.getImeOptions() | EditorInfo.IME_ACTION_DONE);
+
+        // create empty labels
         for (int i = 0; i < labelIdx.length; i++){
             TextView scoreBoardLabel = (TextView) findViewById(labelIdx[i]);
             scoreBoardController.setScoreBoardLabel(scoreBoardLabel, 0);
         }
+
+        // set amount of labels
+        scoreBoardController.setMaxLabelCounter(labelIdx.length);
     }
 
     private void setActivityLabel() throws PackageManager.NameNotFoundException {
