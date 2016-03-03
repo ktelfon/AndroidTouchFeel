@@ -28,12 +28,14 @@ public class ScoreBoardController {
         this.maxLabelCounter = maxLabelCounter;
     }
 
-    public void setLabel(String text, int score) {
+    public int setLabel(String text, int score) {
         scoreBoardLabels.get(freeLabelCounter).getLabel().setText(text);
         scoreBoardLabels.get(freeLabelCounter).setScore(score);
         freeLabelCounter++;
         if(freeLabelCounter == maxLabelCounter){
             freeLabelCounter = 0;
+            return scoreBoardLabels.get(maxLabelCounter - 1).getLabel().getId();
         }
+        return scoreBoardLabels.get(freeLabelCounter - 1).getLabel().getId();
     }
 }
