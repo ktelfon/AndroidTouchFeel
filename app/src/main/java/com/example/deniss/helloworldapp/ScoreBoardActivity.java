@@ -25,7 +25,8 @@ import java.util.Arrays;
  */
 public class ScoreBoardActivity extends AppCompatActivity {
 
-    ScoreBoardController scoreBoardController;
+    private ScoreBoardController scoreBoardController;
+    private String freeLabelSaveId = "1377";
 
     final Integer[] enterKeys = {
             EditorInfo.IME_ACTION_GO,
@@ -108,6 +109,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
     }
 
     private void loadLabels(SharedPreferences sharedPref, int defaultValue){
+        int freeLabelCounter = sharedPref.getInt(freeLabelSaveId, 0);
+        scoreBoardController.setFreeLabelCounter(freeLabelCounter);
         for (int i = 0; i < labelLayoutIdx.length; i++){
 
             String labelText = sharedPref.getString(String.valueOf(labelLayoutIdx[i]), String.valueOf(defaultValue));
@@ -139,6 +142,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(textId, score);
         editor.putString(String.valueOf(labelId), textId);
+        editor.putInt(freeLabelSaveId, scoreBoardController.getFreeLabelCounter());
         editor.commit();
     }
 

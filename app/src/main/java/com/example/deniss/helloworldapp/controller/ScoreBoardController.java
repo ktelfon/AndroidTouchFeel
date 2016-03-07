@@ -38,4 +38,12 @@ public class ScoreBoardController {
         }
         return scoreBoardLabels.get(freeLabelCounter - 1).getLabel().getId();
     }
+
+    public int getFreeLabelCounter() {
+        return freeLabelCounter;
+    }
+
+    public void setFreeLabelCounter(int freeLabelCounter) {
+        this.freeLabelCounter = freeLabelCounter;
+    }
 }
