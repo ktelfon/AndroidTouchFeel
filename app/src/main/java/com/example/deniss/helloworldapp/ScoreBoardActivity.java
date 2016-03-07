@@ -68,17 +68,15 @@ public class ScoreBoardActivity extends AppCompatActivity {
 
         final EditText userNameInput = (EditText) findViewById(R.id.user_name_input);
         userNameInput.setImeActionLabel("Done!", KeyEvent.KEYCODE_ENTER);
-
+        userNameInput.setVisibility(View.VISIBLE);
         userNameInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(final TextView textView, final int keyCode, final KeyEvent keyEvent) {
                 if (Arrays.asList(enterKeys).contains(keyCode)) {
-                    //TODO: Block this edit text when this happens
-                    //TODO: Fix score diplay
                     Integer score = Integer.valueOf(getIntent().getStringExtra("score"));
 
-                     int id = scoreBoardController.setLabel(
+                    int id = scoreBoardController.setLabel(
                             userNameInput.getText().toString(),
                             score);
 
@@ -92,7 +90,9 @@ public class ScoreBoardActivity extends AppCompatActivity {
 
                     userNameInput.clearFocus();
                     userNameInput.setText("");
-
+                    if (AppConst.testMode) {
+                        userNameInput.setVisibility(View.INVISIBLE);
+                    }
                     return true;
                 }
                 return false;
@@ -108,16 +108,16 @@ public class ScoreBoardActivity extends AppCompatActivity {
         scoreBoardController.setMaxLabelCounter(labelLayoutIdx.length);
     }
 
-    private void loadLabels(SharedPreferences sharedPref, int defaultValue){
+    private void loadLabels(SharedPreferences sharedPref, int defaultValue) {
         int freeLabelCounter = sharedPref.getInt(freeLabelSaveId, 0);
         scoreBoardController.setFreeLabelCounter(freeLabelCounter);
-        for (int i = 0; i < labelLayoutIdx.length; i++){
+        for (int i = 0; i < labelLayoutIdx.length; i++) {
 
             String labelText = sharedPref.getString(String.valueOf(labelLayoutIdx[i]), String.valueOf(defaultValue));
-            int score = sharedPref.getInt(labelText,defaultValue);
+            int score = sharedPref.getInt(labelText, defaultValue);
 
             TextView scoreBoardLabel = (TextView) findViewById(labelLayoutIdx[i]);
-            scoreBoardLabel.setText(labelText);
+            scoreBoardLabel.setText(labelText + " " + score);
 
             scoreBoardController.setScoreBoardLabel(scoreBoardLabel, score);
         }
@@ -136,7 +136,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         setTitle(title + ": " + score);
     }
 
-    private void saveData(int labelId,String textId, int score){
+    private void saveData(int labelId, String textId, int score) {
         // save 2131493005
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -146,7 +146,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    private void loadData(){
+    private void loadData() {
         //load
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         loadLabels(sharedPref, AppConst.DEFAULT_SCORE);

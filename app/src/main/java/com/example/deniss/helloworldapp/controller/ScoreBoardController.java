@@ -20,7 +20,7 @@ public class ScoreBoardController {
         scoreBoardLabels = new ArrayList<>();
     }
 
-    public void setScoreBoardLabel(TextView scoreBoardLabel, int score){
+    public void setScoreBoardLabel(TextView scoreBoardLabel, int score) {
         scoreBoardLabels.add(new ScorePair(scoreBoardLabel, score));
     }
 
@@ -29,10 +29,10 @@ public class ScoreBoardController {
     }
 
     public int setLabel(String text, int score) {
-        scoreBoardLabels.get(freeLabelCounter).getLabel().setText(text);
+        scoreBoardLabels.get(freeLabelCounter).getLabel().setText(text + " " + score);
         scoreBoardLabels.get(freeLabelCounter).setScore(score);
         freeLabelCounter++;
-        if(freeLabelCounter == maxLabelCounter){
+        if (freeLabelCounter == maxLabelCounter) {
             freeLabelCounter = 0;
             return scoreBoardLabels.get(maxLabelCounter - 1).getLabel().getId();
         }

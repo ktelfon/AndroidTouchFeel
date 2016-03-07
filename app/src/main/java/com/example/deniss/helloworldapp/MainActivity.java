@@ -22,6 +22,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    //TODO: remove this
     private GuessGameController guessGameController;
     private int resetButtonIndex = R.id.resetButton;
     private int guessCounterIndex = R.id.guessCounterLabel;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setupApp();
     }
 
-    private void setupApp(){
+    private void setupApp() {
 
         guessGameController = new GuessGameController();
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         List<Integer> listOfButtonIndexes = Arrays.asList(buttonIdx);
         Collections.shuffle(listOfButtonIndexes, new Random(seed));
 
-        for(int i = 0 ; i < listOfButtonIndexes.size(); i += 2){
+        for (int i = 0; i < listOfButtonIndexes.size(); i += 2) {
             //TODO: make this without XML
             guessGameController.createPair(
                     createButton(listOfButtonIndexes.get(i + 1)),
@@ -78,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private CustomButton createButton(int buttonId)
-    {
+    private CustomButton createButton(int buttonId) {
         final CustomButton btn = (CustomButton) findViewById(buttonId);
 
         btn.setTextSize(50);
@@ -87,7 +87,10 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToScoreBoard();
+
+                if (AppConst.testMode) {
+                    switchToScoreBoard();
+                }
                 guessGameController.checkIfPairIsOpen(btn);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         return btn;
     }
 
-    private void switchToScoreBoard(){
+    private void switchToScoreBoard() {
         Intent i = new Intent(getApplicationContext(), ScoreBoardActivity.class);
         i.putExtra("score", String.valueOf(guessGameController.getGuessCounter()));
         startActivity(i);
