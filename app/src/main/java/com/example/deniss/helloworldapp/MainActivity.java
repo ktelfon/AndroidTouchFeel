@@ -1,6 +1,7 @@
 package com.example.deniss.helloworldapp;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO: remove this
+    //TODO: Add facebook login
     private GuessGameController guessGameController;
     private int resetButtonIndex = R.id.resetButton;
     private int guessCounterIndex = R.id.guessCounterLabel;
@@ -81,13 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
     private CustomButton createButton(int buttonId) {
         final CustomButton btn = (CustomButton) findViewById(buttonId);
-
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
         btn.setTextSize(50);
         btn.setText("?");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mp.start();
                 if (AppConst.testMode) {
                     switchToScoreBoard();
                 }
